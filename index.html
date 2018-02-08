@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Neighborhood Map</title>
+    <link rel="stylesheet" href="style/w3.css">
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+    <div class="w3-row">
+        <div class="w3-sidebar w3-bar-block dark-bg side w3-col m3 links" id="sidebar"> 
+            <form>            
+                <input type="search" data-bind="value: filter, valueUpdate: 'keyup'" autocomplete="off" class="w3-bar-item w3-input w3-section" placeholder="Filter..">
+            </form>
+            <div data-bind="foreach: visiblePlaces" id="side-links">
+                <button class="w3-button w3-block" data-bind="text: name, attr: { id: '' + $index() }">Lorem ipsum dolor sit amet</button>
+            </div>
+        </div>
+            
+        <header style="dark-bg" class="w3-col m12 fixed dark-bg" id="main">
+            <div class="w3-row">
+            </div>
+            <button class="w3-button dark-bg w3-xlarge w3-hover-dark-grey" id="hamburger">☰</button>
+            <div class="w3-container">
+                <span class="w3-bar-item w3-padding-16 w3-xxlarge">My neighborhood</span>
+            </div>
+        </header>
+        <div class="w3-row">
+            <div id="map" class="w3-col m12"></div>
+        </div>
+    </div>
+    <script src="scripts/lib/knockout-3.4.2.js"></script>
+    <script src="scripts/lib/jquery-3.3.1.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDn_ngP4UJg2I-QBWwuIdv3_T3f01MuMyk&callback=initMap"
+   async defer></script>
+</body>
+</html>

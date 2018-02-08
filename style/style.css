@@ -1,0 +1,38 @@
+body {
+    background: #181e27;
+}
+.side {
+    width:25%;
+    display: none;
+    position: absolute;
+    margin-right: 0;
+}
+.dark-bg {
+    background-color: #181e27;
+    color: white;
+}
+
+.fixed {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.abs {
+    position: absolute;
+}
+
+.abs button {
+    z-index: 2;
+}
+
+.abs div {
+    z-index: -1;
+}
+
+#map {
+    height: 91.85vh;
+}
+
+#info-window {
+    padding: 10px;
+}
