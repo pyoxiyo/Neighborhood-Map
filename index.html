@@ -9,13 +9,13 @@
     <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
-    <div class="w3-row">
-        <div class="w3-sidebar w3-bar-block dark-bg side w3-col m3 links" id="sidebar"> 
+    <div class="w3-row  w3-mobile">
+        <div class="w3-sidebar w3-bar-block dark-bg side w3-col w3-quarter links" id="sidebar"> 
             <form>            
-                <input type="search" data-bind="value: filter, valueUpdate: 'keyup'" autocomplete="off" class="w3-bar-item w3-input w3-section" placeholder="Filter..">
+                <input type="search" data-bind="value: filter, valueUpdate: 'keyup'" autocomplete="off" class="w3-bar-item w3-mobile w3-input w3-section" placeholder="Filter..">
             </form>
-            <div data-bind="foreach: visiblePlaces" id="side-links">
-                <button class="w3-button w3-block" data-bind="text: name, attr: { id: '' + $index() }">Lorem ipsum dolor sit amet</button>
+            <div data-bind="foreach: visiblePlaces" id="side-links" class="side-content w3-mobile">
+                <div class="w3-button w3-mobile w3-block" data-bind="text: name, attr: { id: '' + $index() }">Lorem ipsum dolor sit amet</div>
             </div>
         </div>
             

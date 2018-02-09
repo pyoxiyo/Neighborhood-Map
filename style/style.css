@@ -7,6 +7,10 @@ body {
     position: absolute;
     margin-right: 0;
 }
+
+.side-content {
+    width: 100%;
+}
 .dark-bg {
     background-color: #181e27;
     color: white;

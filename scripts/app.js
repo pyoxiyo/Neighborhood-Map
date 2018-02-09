@@ -77,9 +77,7 @@ function initMap() {
                 url: w,
                 dataType: "jsonp",
                 success: function(response) {
-                    var article = response[1][0];
-                    var url = "http://en.wikipedia.org/wiki/" + article;
-                    $('.gm-style-iw').append("<br><span><a href='" + url + "' target='_blank'>" + article + "</a></span>") ;
+                    appendLink(response);
                     }
             })
         }
@@ -107,9 +105,10 @@ function initMap() {
                 var wikiUrl = "http://en.wikipedia.org/w/api.php?action=opensearch&search="
                 + data[i][0] + "&format=json&callback=wikiCallback";
                 infoWindow.setContent(data[i][0] + ajaxWiki(wikiUrl));
-                infoWindow.open(map, marker);               
+                infoWindow.open(map, marker);
             }
         })(marker, i));
+
 
     }
     function bounce(e) {
@@ -121,6 +120,11 @@ function initMap() {
         // Makes the clicked on marker bounce
         e.setAnimation(google.maps.Animation.BOUNCE);
     }
-
-    
+    // ajax stuff
+    function appendLink(r) {
+        var article = r[1][0];
+        var url = "http://en.wikipedia.org/wiki/" + article;
+        var wikiLink = "<br><span><a href='" + url + "' target='_blank'>" + article + "</a></span>";
+        $('.gm-style-iw').append(wikiLink);
+    }
 }
