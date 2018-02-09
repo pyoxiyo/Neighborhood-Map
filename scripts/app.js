@@ -83,9 +83,8 @@ function initMap() {
                     }
             })
         }
-        // Listens for click events to set the content of the info Window
+        // Listens for click events on the marker to set the content of the info Window
         // and open it. Also makes the marker bounce
-
         google.maps.event.addListener(marker, 'click', (function(marker, i) {
             return function () {
                 // this function is for the bounce animation
@@ -94,14 +93,13 @@ function initMap() {
                 var wikiUrl = "http://en.wikipedia.org/w/api.php?action=opensearch&search="
                 + data[i][0] + "&format=json&callback=wikiCallback";
                 infoWindow.setContent(data[i][0] + ajaxWiki(wikiUrl));
-                // infoTitle.push(infoWindow);
                 infoWindow.open(map, marker);
             }
             // the idea of using the IFFE was taken from stack overflow.
             // https://stackoverflow.com/questions/32798480/assign-infowindow-for-each-marker-in-google-maps
         })(marker, i));
-        // YOU WERE HERE ------------------------------------------------------------------ YOU WERE HERE ------------
-        $('#side-links').attr('id', i).click((function(marker, i) {
+        // Same thing as the one above, but for the buttons on the sidebar.
+        $('#side-links #' + i).click((function(marker, i) {
             return function () {
                 // this function is for the bounce animation
                 bounce(markers[i]);
@@ -109,7 +107,6 @@ function initMap() {
                 var wikiUrl = "http://en.wikipedia.org/w/api.php?action=opensearch&search="
                 + data[i][0] + "&format=json&callback=wikiCallback";
                 infoWindow.setContent(data[i][0] + ajaxWiki(wikiUrl));
-                // infoTitle.push(infoWindow);
                 infoWindow.open(map, marker);               
             }
         })(marker, i));
