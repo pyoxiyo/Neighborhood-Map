@@ -12,10 +12,10 @@
     <div class="w3-row  w3-mobile">
         <div class="w3-sidebar w3-bar-block dark-bg side w3-col w3-quarter links" id="sidebar"> 
             <form>            
-                <input type="search" data-bind="value: filter, valueUpdate: 'keyup'" autocomplete="off" class="w3-bar-item w3-mobile w3-input w3-section" placeholder="Filter..">
+                <input type="search" data-bind="textInput: filter" autocomplete="off" class="w3-bar-item w3-mobile w3-input w3-section" placeholder="Filter..">
             </form>
-            <div data-bind="foreach: visiblePlaces" id="side-links" class="side-content w3-mobile">
-                <div class="w3-button w3-mobile w3-block" data-bind="text: name, attr: { id: '' + $index() }">Lorem ipsum dolor sit amet</div>
+            <div data-bind="foreach: filteredItems" id="side-links" class="side-content w3-mobile">
+                <div class="w3-button w3-mobile w3-block" data-bind="text: name,click: $parent.highlightMarker">Lorem ipsum dolor sit amet</div>
             </div>
         </div>
             
@@ -33,7 +33,9 @@
     </div>
     <script src="scripts/lib/knockout-3.4.2.js"></script>
     <script src="scripts/lib/jquery-3.3.1.js"></script>
+    <script src="scripts/w3.js"></script>
     <script src="scripts/app.js"></script>
+    <script src="scripts/filter.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDn_ngP4UJg2I-QBWwuIdv3_T3f01MuMyk&callback=initMap"
    async defer></script>
 </body>

@@ -1,44 +1,11 @@
-// visual stuff
-var hamburger = $("#hamburger");
-var sidebar = $("#sidebar");
-var content = $("#main");
-var hidden = true;
-hamburger.click(function() {
-    if (hidden == true) {
-        content.css("margin-left", "25%")
-        sidebar.css("display", "block");
-        content.removeClass("m12");
-        content.addClass("m9")
-        hidden = false;
-    } else if (hidden == false) {
-        content.css("margin-left", "0")
-        sidebar.css("display", "none");
-        content.removeClass("m9");
-        content.addClass("m12")
-        hidden = true;
-    }
-});
-//  this is the code
-
-// Filter
-
-// places array for the sidebar
-var places = [{name:"The University of Sydney", id:0}, {name:"Powerhouse Museum", id:1}, {name:"Darling Harbour", id:2},
-{name:"Sydney Cricket & Sports Ground Trust", id:3}, {name:"Mrs Macquarie's Chair", id:4}];
-
-// using knockout.js
-function ViewModel(){
-    var self =this;
-    this.filter = ko.observable();
-    this.places = ko.observableArray(places);
-    this.visiblePlaces = ko.computed(function(){
-        return this.places().filter(function(place){
-            if(!self.filter() || place.name.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1)
-                return place;
-        });
-    },this)
-  };
-  ko.applyBindings( new ViewModel);
+// this is where all the data is pulled from
+var data = [
+    {name: "The University of Sydney ", position: {lat: -33.888558, lng: 151.187308}},
+    {name: "Powerhouse Museum ", position: {lat: -33.878506, lng: 151.199566}},
+    {name: "Darling Harbour ", position: {lat: -33.874879, lng: 151.200899}},
+    {name: "Sydney Cricket & Sports Ground Trust ", position: {lat: -33.891521, lng: 151.224847}},
+    {name: "Mrs Macquarie's Chair ", position: {lat: -33.859654, lng: 151.222534}}
+];
 
 // Map
 var map;
@@ -49,82 +16,58 @@ function initMap() {
     zoom: 14
     });
 
-    // Gets all the marker lat longs and titles for the info window
-    var data = [
-        ["The University of Sydney ", {lat: -33.888558, lng: 151.187308}],
-        ["Powerhouse Museum ", {lat: -33.878506, lng: 151.199566}],
-        ["Darling Harbour ", {lat: -33.874879, lng: 151.200899}],
-        ["Sydney Cricket & Sports Ground Trust ", {lat: -33.891521, lng: 151.224847}],
-        ["Mrs Macquarie's Chair ", {lat: -33.859654, lng: 151.222534}]
-    ];
     // declare the infoWindow
     var infoWindow = new google.maps.InfoWindow();
-    // Store the markers here
-    markers = [];
-    // Loops through the data array to get the parameters for the markers
-    for(var i = 0; i < data.length; i++) { 
+
+    // Creates the markers, and store them along side the info windows and the wikipedia
+    for(var i = 0; i < data.length; i++) {
         var marker = new google.maps.Marker({
-            position: data[i][1],
+            position: data[i].position,
             map: map,
-            title: data[i][0],
+            title: data[i].name,
+            icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
             animation: google.maps.Animation.DROP
         });
-        // Stores each marker
-        markers.push(marker);
-        // ajax for the wikipedia links
-        var ajaxWiki = function(w) {
-            $.ajax({
-                url: w,
-                dataType: "jsonp",
-                success: function(response) {
-                    appendLink(response);
-                    }
-            })
-        }
-        // Listens for click events on the marker to set the content of the info Window
-        // and open it. Also makes the marker bounce
-        google.maps.event.addListener(marker, 'click', (function(marker, i) {
-            return function () {
-                // this function is for the bounce animation
-                bounce(this);
-                // the link to the api
-                var wikiUrl = "http://en.wikipedia.org/w/api.php?action=opensearch&search="
-                + data[i][0] + "&format=json&callback=wikiCallback";
-                infoWindow.setContent(data[i][0] + ajaxWiki(wikiUrl));
-                infoWindow.open(map, marker);
-            }
-            // the idea of using the IFFE was taken from stack overflow.
-            // https://stackoverflow.com/questions/32798480/assign-infowindow-for-each-marker-in-google-maps
-        })(marker, i));
-        // Same thing as the one above, but for the buttons on the sidebar.
-        $('#side-links #' + i).click((function(marker, i) {
-            return function () {
-                // this function is for the bounce animation
-                bounce(markers[i]);
-                // the link to the api
-                var wikiUrl = "http://en.wikipedia.org/w/api.php?action=opensearch&search="
-                + data[i][0] + "&format=json&callback=wikiCallback";
-                infoWindow.setContent(data[i][0] + ajaxWiki(wikiUrl));
-                infoWindow.open(map, marker);
-            }
-        })(marker, i));
-
+        // Stores each marker, info window and wikipedia link in the data array
+        data[i].marker = marker;
+        data[i].infoWindow = infoWindow;
+        data[i].wikiLink = "http://en.wikipedia.org/w/api.php?action=opensearch&search=" + data[i].name + "&format=json&callback=wikiCallback";
 
     }
-    function bounce(e) {
-        // Sets each markers animation state to null so that only the
-        // marker that is currently clicked on gets to bounce
-        for(var i = 0; i < markers.length; i++) {
-            markers[i].setAnimation(null);
-        }
-        // Makes the clicked on marker bounce
-        e.setAnimation(google.maps.Animation.BOUNCE);
+
+    // adds an event listener for each marker
+    data.forEach(function(loc){
+        loc.marker.addListener('click', function(){
+            highlight(this); // makes the clicked on marker orange and bouncy
+            // puts the name and the wikipedia hyperlink in the info window
+            loc.infoWindow.setContent(loc.name + ajaxWiki(loc.wikiLink)); // this ajax function is declared below
+            loc.infoWindow.open(map, loc.marker); // shows the info window
+        });
+    });
+    // activates knockout.js
+    ko.applyBindings( new ViewModel());
     }
-    // ajax stuff
-    function appendLink(r) {
-        var article = r[1][0];
-        var url = "http://en.wikipedia.org/wiki/" + article;
-        var wikiLink = "<br><span><a href='" + url + "' target='_blank'>" + article + "</a></span>";
-        $('.gm-style-iw').append(wikiLink);
+
+// function that gives the marker bouncieness and orangeness
+function highlight(marker) {
+    for(var i = 0; i < data.length; i++) {
+        data[i].marker.setAnimation(null); // removes animation from each marker
+        data[i].marker.setIcon('http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'); // Sets each markers color to yellow
     }
+    marker.setAnimation(google.maps.Animation.BOUNCE); // Makes the clicked on marker bounce
+    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/orange-dot.png'); // Makes the clicked on marker orange
 }
+
+// AJAX for the wikipedia links
+var ajaxWiki = function(w) {
+    $.ajax({
+        url: w,
+        dataType: "jsonp",
+        success: function(response) {
+            var article = response[1][0];
+            var url = "http://en.wikipedia.org/wiki/" + article;
+            var wikiLink = "<br><span><a href='" + url + "' target='_blank'>" + article + "</a></span>";
+            $('.gm-style-iw').append(wikiLink);
+            }
+    });
+};
