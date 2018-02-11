@@ -6,11 +6,13 @@ body {
     display: none;
     position: absolute;
     margin-right: 0;
+
 }
 
 .side-content {
     width: 100%;
 }
+
 .dark-bg {
     background-color: #181e27;
     color: white;
@@ -19,6 +21,10 @@ body {
 .fixed {
     display: flex;
     flex-wrap: wrap;
+}
+
+.links {
+    max-width: 100%;
 }
 
 .abs {
@@ -33,10 +39,19 @@ body {
     z-index: -1;
 }
 
+.big-text {
+    font-size: 2.5em;
+}
+
 #map {
     height: 91.85vh;
 }
 
 #info-window {
     padding: 10px;
+}
+
+
+.wrap {
+    white-space: pre-wrap;
 }

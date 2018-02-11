@@ -7,26 +7,30 @@
     <title>Neighborhood Map</title>
     <link rel="stylesheet" href="style/w3.css">
     <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" media="screen and (max-width: 450px)" href="style/small.css">
+
 </head>
 <body>
-    <div class="w3-row  w3-mobile">
-        <div class="w3-sidebar w3-bar-block dark-bg side w3-col w3-quarter links" id="sidebar"> 
+
+    <div class="w3-row w3-mobile">
+        <div class="w3-sidebar w3-bar-block dark-bg side w3-col" id="sidebar"> 
             <form>            
                 <input type="search" data-bind="textInput: filter" autocomplete="off" class="w3-bar-item w3-mobile w3-input w3-section" placeholder="Filter..">
             </form>
             <div data-bind="foreach: filteredItems" id="side-links" class="side-content w3-mobile">
-                <div class="w3-button w3-mobile w3-block" data-bind="text: name,click: $parent.highlightMarker">Lorem ipsum dolor sit amet</div>
+                <span class="w3-button w3-mobile w3-block wrap buttons-mobile" data-bind="text: name,click: $parent.highlightMarker">Lorem ipsum dolor sit amet</span>
             </div>
         </div>
-            
+
         <header style="dark-bg" class="w3-col m12 fixed dark-bg" id="main">
             <div class="w3-row">
             </div>
             <button class="w3-button dark-bg w3-xlarge w3-hover-dark-grey" id="hamburger">☰</button>
             <div class="w3-container">
-                <span class="w3-bar-item w3-padding-16 w3-xxlarge">My neighborhood</span>
+                <span class="w3-bar-item w3-padding-16 big-text big-text-mobile">My neighborhood</span>
             </div>
         </header>
+        
         <div class="w3-row">
             <div id="map" class="w3-col m12"></div>
         </div>
