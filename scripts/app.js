@@ -38,7 +38,7 @@ function initMap() {
     // adds an event listener for each marker
     data.forEach(function(loc){
         loc.marker.addListener('click', function(){
-            highlight(this); // makes the clicked on marker orange and bouncy
+            highlight(this); // makes the clicked on marker orange and bouncy.
             // puts the name and the wikipedia hyperlink in the info window
             loc.infoWindow.setContent(loc.name + ajaxWiki(loc.wikiLink)); // this ajax function is declared below
             loc.infoWindow.open(map, loc.marker); // shows the info window
