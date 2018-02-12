@@ -39,7 +39,7 @@ function initMap() {
     data.forEach(function(loc){
         loc.marker.addListener('click', function(){
             highlight(this); // makes the clicked on marker orange and bouncy.
-            ajaxWiki(loc) // function that sets the name of the marker and wiki link to an infoWindow
+            ajaxWiki(loc); // function that sets the name of the marker and wiki link to an infoWindow
         });
     });
     // activates knockout.js
@@ -74,5 +74,5 @@ var ajaxWiki = function(loc) {
 
 // ERROR HANDLING
 mapError = function() {
-    $('#map').append("<h1 class='big-text'>There was an error!, google maps didn't work properly</h1>")
-}
+    $('#map').append("<h1 class='big-text'>There was an error!, google maps didn't work properly</h1>");
+};
