@@ -38,7 +38,6 @@ var ViewModel = function() {
     // highlights the clicked on marker
     self.highlightMarker = function(clickedPlace) {
         highlight(clickedPlace.marker); // makes the clicked on marker orange and bouncy
-        clickedPlace.infoWindow.setContent(clickedPlace.name + ajaxWiki(clickedPlace.wikiLink)); // puts the name and the wikipedia hyperlink in the info window
-        clickedPlace.infoWindow.open(map, clickedPlace.marker); // shows the info window
+        ajaxWiki(clickedPlace); // function that sets the name of the marker and wiki link to an infoWindow
     };
 };

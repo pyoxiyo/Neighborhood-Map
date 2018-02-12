@@ -39,9 +39,7 @@ function initMap() {
     data.forEach(function(loc){
         loc.marker.addListener('click', function(){
             highlight(this); // makes the clicked on marker orange and bouncy.
-            // puts the name and the wikipedia hyperlink in the info window
-            loc.infoWindow.setContent(loc.name + ajaxWiki(loc.wikiLink)); // this ajax function is declared below
-            loc.infoWindow.open(map, loc.marker); // shows the info window
+            ajaxWiki(loc) // function that sets the name of the marker and wiki link to an infoWindow
         });
     });
     // activates knockout.js
@@ -58,16 +56,23 @@ function highlight(marker) {
     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/orange-dot.png'); // Makes the clicked on marker orange
 }
 
-// AJAX for the wikipedia links
-var ajaxWiki = function(w) {
+// AJAX for the wikipedia links info window content
+var ajaxWiki = function(loc) {
     $.ajax({
-        url: w,
-        dataType: "jsonp",
-        success: function(response) {
-            var article = response[1][0];
-            var url = "http://en.wikipedia.org/wiki/" + article;
-            var wikiLink = "<br><span><a href='" + url + "' target='_blank'>" + article + "</a></span>";
-            $('.gm-style-iw').append(wikiLink);
-            }
-    });
+        url: loc.wikiLink,
+        dataType: "jsonp"
+    }).done(function(response) {
+        var article = response[1][0];
+        var url = "http://en.wikipedia.org/wiki/" + article;
+        var Link = "<br><span><a href='" + url + "' target='_blank'>" + article + "</a></span>";
+        loc.infoWindow.setContent(loc.name + Link);
+        loc.infoWindow.open(map, loc.marker);
+        }).fail(function(){
+            loc.infoWindow.setContent(loc.name + "<br> AJAX FAILED, SORRY");
+        });
 };
+
+// ERROR HANDLING
+mapError = function() {
+    $('#map').append("<h1 class='big-text'>There was an error!, google maps didn't work properly</h1>")
+}
