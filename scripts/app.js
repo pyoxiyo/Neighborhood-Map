@@ -69,6 +69,7 @@ var ajaxWiki = function(loc) {
         loc.infoWindow.open(map, loc.marker);
         }).fail(function(){
             loc.infoWindow.setContent(loc.name + "<br> AJAX FAILED, SORRY");
+            loc.infoWindow.open(map, loc.marker);
         });
 };
 
